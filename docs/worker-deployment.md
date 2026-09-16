@@ -110,6 +110,7 @@ Returns generated `.amrs` or `.arrs` content from a fallback conversion snapshot
 - `FETCH_CACHE_TTL_SECONDS` controls public remote URL fetch caching. User-pasted module text is not cached by this path.
 - `DYNAMIC_CACHE_TTL_SECONDS` controls the converted `/sub/*` response cache. Keep it non-zero for public deployments to reduce repeated conversion CPU and upstream fetch pressure.
 - Remote script fetching is on by default. Set `fetchScripts=false` only for offline/native diagnostics.
+- Requests to `kelee.one` and its subdomains use a Loon User-Agent because Kelee restricts remote resources to supported proxy clients. Update `KELEE_LOON_USER_AGENT` in `wrangler.toml` (or the Worker environment) if Kelee changes the accepted version.
 - `MAX_SCRIPT_FETCHES` caps how many unique remote scripts one conversion fetches before emitting `script-fetch-count-exceeded`; keep it below your Worker subrequest limit for public deployments. Set it to `0` only for trusted private Workers where the platform limit is known.
 - Remote `Map Local data-type=file` text resources use independent `MAX_MAP_LOCAL_BYTES`, `MAX_TOTAL_MAP_LOCAL_BYTES`, and `MAX_MAP_LOCAL_FETCHES` budgets. Unknown or binary-looking files are not downloaded.
 - Custom icons accept PNG, JPEG, WebP, and GIF only. The Worker validates image signatures, blocks localhost/private targets on every redirect, and limits downloaded bytes with `MAX_ICON_BYTES` (never above Anywhere's 256 KiB cap).
