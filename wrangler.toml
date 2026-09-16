@@ -18,6 +18,9 @@ FETCH_CACHE_TTL_SECONDS = "900"
 DYNAMIC_CACHE_TTL_SECONDS = "900"
 RULESET_CACHE_TTL_SECONDS = "300"
 RATE_LIMIT_PER_MINUTE = "60"
+# Kelee only serves remote resources to supported proxy clients. Override this
+# value when its accepted Loon User-Agent changes.
+KELEE_LOON_USER_AGENT = "Loon/649 CFNetwork/1492.0.1 Darwin/23.3.0"
 
 # Bind a KV namespace for persistent /r/:hash/:filename rule URLs in production.
 [[kv_namespaces]]
