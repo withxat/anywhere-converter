@@ -1053,7 +1053,7 @@ async function fetchSourceURL(rawUrl, env, byteLimit, options = {}) {
   for (const candidate of fetchURLCandidates(url)) {
     try {
       response = await fetch(candidate.toString(), {
-        headers: { "user-agent": "AnywhereModuleConverter/0.1" },
+        headers: sourceRequestHeaders(candidate, env),
         redirect: "follow",
       });
     } catch (error) {
@@ -1074,6 +1074,19 @@ async function fetchSourceURL(rawUrl, env, byteLimit, options = {}) {
   if (new TextEncoder().encode(source).length > limit) return { error: "input_too_large", detail: "远程模块超过大小限制。", status: 413 };
   await putCachedFetchSource(url.toString(), source, env, { platformCache });
   return { source, url: url.toString() };
+}
+
+function sourceRequestHeaders(url, env) {
+  const hostname = url.hostname.toLowerCase();
+  if (hostname === "kelee.one" || hostname.endsWith(".kelee.one")) {
+    return {
+      // Kelee limits remote resources to supported proxy clients. Keep this
+      // configurable so a future Loon build can be adopted without a deploy.
+      "user-agent": env.KELEE_LOON_USER_AGENT || "Loon/649 CFNetwork/1492.0.1 Darwin/23.3.0",
+      accept: "*/*",
+    };
+  }
+  return { "user-agent": "AnywhereModuleConverter/0.1" };
 }
 
 function fetchURLCandidates(url) {
